@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroSonic Defence — IoT Smart Crop Protection System</title>
+    <meta name="description" content="AI-powered wildlife detection, multi-frequency acoustic deterrence (20-65 kHz), and IoT event telemetry for smart agriculture.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Strobe Lighting Simulation Overlay -->
+    <div id="screenStrobeOverlay" class="screen-strobe-overlay"></div>
+
+    <div class="dashboard-container">
+        <!-- Top Navigation / System HUD -->
+        <header class="dashboard-header">
+            <div class="brand-group">
+                <div class="brand-icon">
+                    <span class="pulse-ring"></span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="brand-title">AgroSonic <span class="brand-highlight">Defence</span></h1>
+                    <p class="brand-subtitle">IoT-Powered Autonomous Wildlife Deterrence & Crop Protection</p>
+                </div>
+            </div>
+
+            <div class="header-badges">
+                <div class="hud-pill" id="systemStatusPill">
+                    <span class="status-dot green" id="systemStatusDot"></span>
+                    <span class="status-text" id="systemStatusText">SYSTEM ARMED</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content Grid -->
+        <main class="dashboard-grid">
+            <!-- Left Column: Video Surveillance & Target Classification -->
+            <section class="grid-card vision-card">
+                <div class="card-header">
+                    <div class="header-left">
+                        <span class="header-indicator blue-dot"></span>
+                        <h2>Real-Time Vision & Intrusive Target Detection</h2>
+                    </div>
+                    <div class="header-right">
+                        <span class="fps-badge font-mono" id="streamFps">FPS: --</span>
+                        <span class="source-badge" id="cameraSourceBadge">Webcam Live</span>
+                    </div>
+                </div>
+
+                <!-- Video Viewport Container with Dynamic Strobe Border -->
+                <div class="video-wrapper" id="videoWrapper">
+                    <img id="videoFeed" src="/video_feed" alt="AgroSonic Vision Feed" class="video-stream">
+                    
+                    <!-- Tactical HUD Overlay Elements -->
+                    <div class="tactical-hud">
+                        <div class="hud-corner top-left"></div>
+                        <div class="hud-corner top-right"></div>
+                        <div class="hud-corner bottom-left"></div>
+                        <div class="hud-corner bottom-right"></div>
+
+                        <!-- Live Detection Banner -->
+                        <div id="liveDetectionBanner" class="detection-banner hidden">
+                            <div class="banner-icon" id="bannerIcon">⚠️</div>
+                            <div class="banner-details">
+                                <div class="banner-title" id="bannerTitle">TARGET INTRUDER DETECTED</div>
+                                <div class="banner-sub" id="bannerSubtitle">Class: Elephant | Confidence: 94%</div>
+                            </div>
+                            <div class="banner-actuation" id="bannerActuation">ACTUATING ULTRASONIC SWEEP</div>
+                        </div>
+
+                        <!-- Strobe Indicator Flasher -->
+                        <div id="hudStrobeIndicator" class="hud-strobe-indicator hidden">
+                            ⚡ HIGH-LUX STROBE ACTIVE (<span id="strobeRateDisplay">18 Hz</span>)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intruder Testing & Verification Toolbar for Judges -->
+                <div class="judge-test-panel">
+                    <div class="test-panel-title">
+                        <span>🧪 Judge Demonstration & Quick Test Injection:</span>
+                        <small>(Hold photo in front of camera OR click any preset target below)</small>
+                    </div>
+                    
+                    <div class="preset-buttons-grid">
+                        <button class="test-btn test-wild" onclick="injectTestSample('wild_boar')" title="Simulate Wild Boar">
+                            <span class="btn-icon">🐗</span>
+                            <div class="btn-text">
+                                <strong>Wild Boar</strong>
+                                <small>21-46 kHz Sweep</small>
+                            </div>
+                        </button>
+
+                        <button class="test-btn test-wild" onclick="injectTestSample('elephant')" title="Simulate Wild Elephant">
+                            <span class="btn-icon">🐘</span>
+                            <div class="btn-text">
+                                <strong>Elephant</strong>
+                                <small>21-46 kHz Sweep</small>
+                            </div>
+                        </button>
+
+                        <button class="test-btn test-livestock" onclick="injectTestSample('dog')" title="Simulate Domestic Dog / Herd">
+                            <span class="btn-icon">🐕</span>
+                            <div class="btn-text">
+                                <strong>Dog / Herd</strong>
+                                <small>20-28 kHz Nudge</small>
+                            </div>
+                        </button>
+
+                        <button class="test-btn test-bird" onclick="injectTestSample('bird')" title="Simulate Bird Intruder">
+                            <span class="btn-icon">🐦</span>
+                            <div class="btn-text">
+                                <strong>Bird Intruder</strong>
+                                <small>32-62 kHz Chirp</small>
+                            </div>
+                        </button>
+
+                        <button class="test-btn test-reset" onclick="clearTestSample()" title="Restore Live Video Feed">
+                            <span class="btn-icon">🔄</span>
+                            <div class="btn-text">
+                                <strong>Live Camera</strong>
+                                <small>Restore Stream</small>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="manual-action-bar">
+                        <div class="action-btn-group">
+                            <button class="action-btn trigger-override" onclick="triggerManualDeterrence()">
+                                ⚡ Manual Deterrence
+                            </button>
+                            <button class="action-btn test-siren-btn" onclick="testPerimeterSiren()" title="Test emergency perimeter siren audio">
+                                🚨 Test Siren
+                            </button>
+                        </div>
+                        <div class="slider-group">
+                            <label for="confSlider">YOLOv8 Confidence: <span id="confValue" class="font-mono">45%</span></label>
+                            <input type="range" id="confSlider" min="20" max="80" value="45" step="5" onchange="updateConfidence(this.value)">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Real-Time Intrusion & Defence Event History Log -->
+            <section class="grid-card events-card">
+                <div class="card-header">
+                    <div class="header-left">
+                        <span class="header-indicator red-dot"></span>
+                        <h2>Intrusion & Defence Event History Log</h2>
+                        <span class="event-count-badge font-mono" id="eventCountBadge">0 events</span>
+                    </div>
+                    <div class="header-right">
+                        <button class="table-action-btn" onclick="clearEventLogs()">Clear</button>
+                        <button class="table-action-btn primary" onclick="exportEventsCsv()">Export CSV</button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="events-table">
+                        <thead>
+                            <tr>
+                                <th>EVENT ID</th>
+                                <th>TIMESTAMP</th>
+                                <th>CATEGORY</th>
+                                <th>STRATEGY</th>
+                                <th>FREQ</th>
+                                <th>STROBE</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventsTableBody">
+                            <tr class="empty-row">
+                                <td colspan="7">System armed and scanning. No intrusion events recorded yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Web Audio & Dashboard Script -->
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
